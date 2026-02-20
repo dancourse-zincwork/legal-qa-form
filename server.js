@@ -23,7 +23,7 @@ async function getDb() {
   if (db) return db;
   if (dbFailed || !PG_URL) return null;
   try {
-    const client = new Client({ connectionString: PG_URL, ssl: { rejectUnauthorized: false } });
+    const client = new Client({ connectionString: PG_URL, ssl: false });
     await client.connect();
     await client.query(`
       CREATE TABLE IF NOT EXISTS query_log (
