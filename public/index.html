@@ -93,7 +93,26 @@
     .badge.needs_edit, .badge.needsedit { background: #fff3cd; color: #856404; }
     .badge.reject { background: #f8d7da; color: #721c24; }
     .result-header .meta { margin-left: auto; font-size: 11px; color: #86868b; text-align: right; }
-    .answer-text { font-size: 14px; line-height: 1.7; white-space: pre-wrap; }
+    .answer-text { font-size: 14px; line-height: 1.7; }
+    .answer-text p { margin-bottom: 8px; }
+    .answer-text ul { margin: 8px 0; padding-left: 20px; }
+    .answer-text li { margin-bottom: 4px; }
+    .answer-section { margin-bottom: 4px; }
+    .confidence-bar { margin-top: 12px; display: flex; align-items: center; }
+    .cite-pill { display: inline; background: #e8eaf6; color: #1E1E3F; padding: 1px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; cursor: default; }
+    .sources-section { margin-top: 14px; padding-top: 14px; border-top: 1px solid #f0f0f5; }
+    .sources-section h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #86868b; margin-bottom: 8px; }
+    .sources-list { display: flex; flex-direction: column; gap: 6px; }
+    .source-item { font-size: 12px; display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #fafafa; border-radius: 6px; }
+    .source-item .relevance { margin-left: auto; font-size: 10px; color: #86868b; }
+    details.details-section { margin-top: 14px; border-top: 1px solid #f0f0f5; padding-top: 14px; }
+    details.details-section summary { font-size: 12px; color: #86868b; cursor: pointer; font-weight: 600; }
+    details.details-section .details-inner { margin-top: 12px; }
+    .repo-predict { position: relative; }
+    .repo-suggestions { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 2px solid #1E1E3F; border-top: none; border-radius: 0 0 10px 10px; z-index: 10; max-height: 150px; overflow-y: auto; display: none; }
+    .repo-suggestions.visible { display: block; }
+    .repo-suggestion { padding: 8px 12px; font-size: 13px; cursor: pointer; }
+    .repo-suggestion:hover { background: #f0f0f5; }
     .feedback-row {
       display: flex; align-items: center; gap: 12px;
       margin-top: 16px; padding-top: 14px; border-top: 1px solid #f0f0f5;
@@ -218,7 +237,7 @@
             <select id="doc-type"><option value="policy">Policy</option><option value="guidance" selected>Guidance</option><option value="matrix">Matrix</option><option value="template">Template</option><option value="procedure">Procedure</option></select>
           </div>
         </div>
-        <div class="form-group" style="margin-bottom:14px"><label for="doc-repo">Repository</label><input type="text" id="doc-repo" placeholder="e.g. legal-policies" value="general"></div>
+        <div class="form-group repo-predict" style="margin-bottom:14px"><label for="doc-repo">Repository</label><input type="text" id="doc-repo" placeholder="e.g. legal-policies" value="general" autocomplete="off" onfocus="showRepoSuggestions()" oninput="filterRepoSuggestions()"><div class="repo-suggestions" id="repo-suggestions"></div></div>
         <div class="form-group"><label for="doc-content">Content (paste text or markdown)</label><textarea id="doc-content" style="min-height:200px" placeholder="Paste the full document content here..."></textarea></div>
         <div class="btn-row"><span class="hint" id="upload-char-count">0 characters</span><button id="upload-btn" onclick="submitUpload()">Upload &amp; Ingest</button></div>
       </div>
@@ -275,15 +294,51 @@
       } catch(err){ stopTimer('ask'); showAskError(err.message,((Date.now()-askStart)/1000).toFixed(1)); }
       finally{ loading.classList.remove('active'); btn.disabled=ta.disabled=false; }
     }
+    function formatAnswer(raw) {
+      if (!raw) return '<p>No answer</p>';
+      // Strip trailing "Confidence: HIGH/MEDIUM/LOW" line
+      let text = raw.replace(/\n*Confidence:\s*(HIGH|MEDIUM|LOW)\s*$/i, '').trim();
+      // Convert [Source N: Title] into visible citation pills
+      text = text.replace(/\[Source (\d+)(?::\s*([^\]]+))?\]/g, '<span class="cite-pill">[Source $1]</span>');
+      // Convert markdown bold
+      text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      // Convert markdown bullets
+      text = text.replace(/^[-•]\s+(.+)$/gm, '<li>$1</li>');
+      text = text.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+      // Convert line breaks
+      text = text.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+      return `<p>${text}</p>`;
+    }
+    function extractSources(d) {
+      // Build a map of Source N -> document title from context
+      const sources = [];
+      const ctx = d.context_text || '';
+      const matches = ctx.matchAll(/\[Source (\d+):\s*([^\]]+?)(?:\s*\(relevance:\s*([\d.]+)\))?\]/g);
+      for (const m of matches) sources.push({ num: m[1], title: m[2], relevance: m[3] || '' });
+      return sources;
+    }
     function showAskResult(d,elapsed) {
       const conf=(d.confidence||'MEDIUM').toUpperCase(),verdict=(d.judge_verdict||'NEEDS_EDIT').toUpperCase(),routing=d.routing||'human_review';
+      const sources = extractSources(d);
+      const sourcesHtml = sources.length ? `<div class="sources-section"><h4>Sources</h4><div class="sources-list">${sources.map(s =>
+        `<div class="source-item"><span class="cite-pill">[Source ${esc(s.num)}]</span> <span>${esc(s.title)}</span>${s.relevance ? `<span class="relevance">${(parseFloat(s.relevance)*100).toFixed(0)}% match</span>` : ''}</div>`
+      ).join('')}</div></div>` : '';
       document.getElementById('ask-result').innerHTML=`<div class="card">
-        <div class="result-header"><span class="badge ${conf.toLowerCase()}">${conf}</span><span class="badge ${verdict.toLowerCase().replace(/_/g,'')}">${verdict.replace(/_/g,' ')}</span>
-        <div class="meta">${d.citation_count||0} citations &middot; ${d.chunks_retrieved||0} chunks<br>${elapsed}s &middot; ${routing==='auto_deliver'?'Auto-deliver':'Needs review'}</div></div>
-        <div class="answer-text">${esc(d.answer||'No answer')}</div>
-        ${d.judge_reasoning?`<div class="judge-card"><h4>Quality Review</h4><p>${esc(d.judge_reasoning)}</p>${d.judge_quality?`<p style="margin-top:4px;font-size:11px;color:#86868b">Score: ${d.judge_quality}</p>`:''}</div>`:''}
-        <div class="stats"><div class="stat"><strong>${d.category||'-'}</strong>Category</div><div class="stat"><strong>${d.complexity||'-'}</strong>Complexity</div><div class="stat"><strong>${d.model_used||'-'}</strong>Model</div><div class="stat"><strong>${d.retrieval_method||'-'}</strong>Retrieval</div></div>
+        <div class="answer-section">
+          <div class="answer-text">${formatAnswer(d.answer)}</div>
+          <div class="confidence-bar"><span class="badge ${conf.toLowerCase()}">${conf} confidence</span>
+          <span style="font-size:12px;color:#86868b;margin-left:8px">${routing==='auto_deliver'?'Ready to deliver':'Needs legal review'}</span></div>
+        </div>
         <div class="feedback-row"><span>Was this helpful?</span><div class="fb-btn" onclick="feedback(this,'up')">&#128077; <span class="fb-label">Yes</span></div><div class="fb-btn" onclick="feedback(this,'down')">&#128078; <span class="fb-label">No</span></div></div>
+        ${sourcesHtml}
+        <details class="details-section"><summary>Quality review &amp; details</summary>
+          <div class="details-inner">
+            ${d.judge_reasoning?`<div class="judge-card"><h4>Judge Assessment</h4><p>${esc(d.judge_reasoning)}</p>
+            <div style="margin-top:6px"><span class="badge ${verdict.toLowerCase().replace(/_/g,'')}" style="font-size:10px">${verdict.replace(/_/g,' ')}</span>${d.judge_quality?` <span style="font-size:11px;color:#86868b">Score: ${d.judge_quality}</span>`:''}${(d.judge_issues||[]).length?`<p style="margin-top:6px;font-size:12px;color:#86868b">Issues: ${d.judge_issues.join(', ')}</p>`:''}</div></div>`:''}
+            <div class="stats"><div class="stat"><strong>${d.category||'-'}</strong>Category</div><div class="stat"><strong>${d.complexity||'-'}</strong>Complexity</div><div class="stat"><strong>${elapsed}s</strong>Time</div><div class="stat"><strong>${d.citation_count||0}</strong>Citations</div></div>
+            <div style="font-size:11px;color:#86868b;margin-top:8px">${d.model_used||''} &middot; ${d.retrieval_method||''} &middot; ${d.chunks_retrieved||0} chunks retrieved</div>
+          </div>
+        </details>
         <div class="disclaimer">AI-generated answer from Zinc's compliance knowledge base. Must be reviewed by Legal before use.</div>
         <div style="margin-top:14px"><button class="btn-secondary" onclick="resetAsk()">Ask another question</button></div></div>`;
       document.getElementById('ask-result').classList.add('active');
@@ -337,6 +392,23 @@
       }catch(err){content.innerHTML=`<div class="card error-card"><h3>Error</h3><p>${esc(err.message)}</p></div>`;}
       finally{loading.style.display='none';}
     }
+    // Repo auto-predict
+    let knownRepos = [];
+    async function fetchRepos() {
+      try { const r = await fetch('/api/documents'); const d = await r.json(); knownRepos = (d.repos || []).map(r => r.name); } catch(e) {}
+    }
+    fetchRepos();
+    function showRepoSuggestions() {
+      const el = document.getElementById('repo-suggestions');
+      const val = document.getElementById('doc-repo').value.toLowerCase();
+      const filtered = knownRepos.filter(r => r.toLowerCase().includes(val));
+      if (filtered.length === 0) { el.classList.remove('visible'); return; }
+      el.innerHTML = filtered.map(r => `<div class="repo-suggestion" onclick="selectRepo('${r}')">${esc(r)}</div>`).join('');
+      el.classList.add('visible');
+    }
+    function filterRepoSuggestions() { showRepoSuggestions(); }
+    function selectRepo(name) { document.getElementById('doc-repo').value = name; document.getElementById('repo-suggestions').classList.remove('visible'); }
+    document.addEventListener('click', e => { if (!e.target.closest('.repo-predict')) document.getElementById('repo-suggestions')?.classList.remove('visible'); });
   </script>
 </body>
 </html>
