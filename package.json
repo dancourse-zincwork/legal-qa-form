@@ -1,0 +1,12 @@
+{
+  "name": "legal-qa-form",
+  "version": "1.0.0",
+  "description": "Legal Compliance QA Form - Build0023-TRUST_QA",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
