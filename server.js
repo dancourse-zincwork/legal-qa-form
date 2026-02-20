@@ -18,35 +18,43 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // ── PostgreSQL setup ──
 let db = null;
+let dbFailed = false;
 async function getDb() {
   if (db) return db;
-  if (!PG_URL) return null;
-  db = new Client({ connectionString: PG_URL, ssl: { rejectUnauthorized: false } });
-  await db.connect();
-  // Create query_log table if not exists
-  await db.query(`
-    CREATE TABLE IF NOT EXISTS query_log (
-      id SERIAL PRIMARY KEY,
-      question TEXT NOT NULL,
-      answer TEXT,
-      confidence TEXT,
-      verdict TEXT,
-      quality_score REAL,
-      category TEXT,
-      complexity TEXT,
-      citation_count INT DEFAULT 0,
-      routing TEXT,
-      processing_time_s REAL,
-      feedback TEXT,
-      source_versions JSONB DEFAULT '{}',
-      created_at TIMESTAMPTZ DEFAULT NOW(),
-      stale BOOLEAN DEFAULT FALSE,
-      stale_reason TEXT
-    )
-  `);
-  return db;
+  if (dbFailed || !PG_URL) return null;
+  try {
+    const client = new Client({ connectionString: PG_URL, ssl: { rejectUnauthorized: false } });
+    await client.connect();
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS query_log (
+        id SERIAL PRIMARY KEY,
+        question TEXT NOT NULL,
+        answer TEXT,
+        confidence TEXT,
+        verdict TEXT,
+        quality_score REAL,
+        category TEXT,
+        complexity TEXT,
+        citation_count INT DEFAULT 0,
+        routing TEXT,
+        processing_time_s REAL,
+        feedback TEXT,
+        source_versions JSONB DEFAULT '{}',
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        stale BOOLEAN DEFAULT FALSE,
+        stale_reason TEXT
+      )
+    `);
+    db = client;
+    console.log("PostgreSQL connected");
+    return db;
+  } catch (e) {
+    console.error("DB connect failed:", e.message);
+    dbFailed = true;
+    return null;
+  }
 }
-getDb().catch(e => console.error("DB init:", e.message));
+getDb();
 
 // ── HTTP proxy helper ──
 function proxyRequest(targetUrl, payload, timeoutMs) {
