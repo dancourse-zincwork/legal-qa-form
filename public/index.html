@@ -11,8 +11,6 @@
       background: #f5f5f7; color: #1d1d1f; min-height: 100vh;
       display: flex; flex-direction: column;
     }
-
-    /* ── Header ── */
     header {
       background: #1E1E3F; padding: 16px 32px;
       display: flex; align-items: center; gap: 14px;
@@ -22,8 +20,6 @@
     header h1 { color: #fff; font-size: 17px; font-weight: 600; }
     header .tag { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.8);
       font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-left: auto; }
-
-    /* ── Tabs ── */
     .tabs {
       background: #fff; border-bottom: 1px solid #e5e5ea;
       display: flex; gap: 0; max-width: 760px; width: 100%;
@@ -36,36 +32,23 @@
     }
     .tab:hover { color: #1E1E3F; }
     .tab.active { color: #1E1E3F; border-bottom-color: #1E1E3F; }
-
-    /* ── Container ── */
     .container { max-width: 760px; width: 100%; margin: 0 auto; padding: 24px; flex: 1; }
     .page { display: none; }
     .page.active { display: block; }
-
-    /* ── Cards ── */
     .card {
       background: #fff; border-radius: 14px; padding: 24px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.06); margin-bottom: 16px;
     }
-    .card label { font-size: 13px; font-weight: 600; color: #1E1E3F;
-      display: block; margin-bottom: 8px; }
+    .card label { font-size: 13px; font-weight: 600; color: #1E1E3F; display: block; margin-bottom: 8px; }
     .card textarea, .card input[type="text"], .card select {
       width: 100%; padding: 12px; border: 2px solid #e5e5ea; border-radius: 10px;
       font-size: 14px; font-family: inherit; outline: none; transition: border-color 0.2s;
     }
     .card textarea { min-height: 90px; resize: vertical; }
     .card textarea:focus, .card input:focus, .card select:focus { border-color: #1E1E3F; }
-    .card textarea:disabled, .card input:disabled, .card select:disabled {
-      background: #f5f5f7; color: #86868b;
-    }
-
-    /* ── Form rows ── */
     .form-row { display: flex; gap: 12px; margin-bottom: 14px; }
     .form-row > * { flex: 1; }
-    .form-row label { margin-bottom: 6px; }
     .form-group { display: flex; flex-direction: column; }
-
-    /* ── Buttons ── */
     .btn-row { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
     .hint { font-size: 12px; color: #86868b; }
     button {
@@ -75,21 +58,14 @@
     }
     button:hover { opacity: 0.88; }
     button:disabled { opacity: 0.4; cursor: not-allowed; }
-    .btn-secondary {
-      background: transparent; color: #1E1E3F; border: 2px solid #e5e5ea;
-    }
+    .btn-secondary { background: transparent; color: #1E1E3F; border: 2px solid #e5e5ea; }
     .btn-secondary:hover { background: #f0f0f5; opacity: 1; }
-
-    /* ── Chips ── */
     .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
     .chip {
       background: #f0f0f5; border: 1px solid #e5e5ea; padding: 5px 12px;
-      border-radius: 20px; font-size: 12px; color: #1E1E3F;
-      cursor: pointer; transition: background 0.2s;
+      border-radius: 20px; font-size: 12px; color: #1E1E3F; cursor: pointer; transition: background 0.2s;
     }
     .chip:hover { background: #e5e5ea; }
-
-    /* ── Loading ── */
     .loading { display: none; text-align: center; }
     .loading.active { display: block; }
     .spinner {
@@ -100,8 +76,6 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .loading p { font-size: 13px; color: #86868b; }
     .elapsed { font-size: 12px; color: #aeaeb2; margin-top: 4px; }
-
-    /* ── Result ── */
     .result { display: none; }
     .result.active { display: block; }
     .result-header {
@@ -118,13 +92,8 @@
     .badge.approve { background: #d4edda; color: #155724; }
     .badge.needs_edit, .badge.needsedit { background: #fff3cd; color: #856404; }
     .badge.reject { background: #f8d7da; color: #721c24; }
-    .result-header .meta {
-      margin-left: auto; font-size: 11px; color: #86868b; text-align: right;
-    }
+    .result-header .meta { margin-left: auto; font-size: 11px; color: #86868b; text-align: right; }
     .answer-text { font-size: 14px; line-height: 1.7; white-space: pre-wrap; }
-    .answer-text p { margin-bottom: 10px; }
-
-    /* ── Feedback ── */
     .feedback-row {
       display: flex; align-items: center; gap: 12px;
       margin-top: 16px; padding-top: 14px; border-top: 1px solid #f0f0f5;
@@ -137,51 +106,31 @@
     }
     .fb-btn:hover { background: #e5e5ea; }
     .fb-btn.selected { border-color: #1E1E3F; background: #1E1E3F; }
-    .fb-btn.selected span { color: #fff; }
+    .fb-btn.selected .fb-label { color: #fff; }
     .fb-label { font-size: 12px; color: #1d1d1f; }
-
-    /* ── Stats ── */
     .stats {
       margin-top: 16px; padding-top: 14px; border-top: 1px solid #f0f0f5;
       display: flex; gap: 20px; flex-wrap: wrap;
     }
     .stat { font-size: 11px; color: #86868b; }
     .stat strong { color: #1E1E3F; display: block; font-size: 15px; margin-bottom: 1px; }
-
-    /* ── Judge card ── */
     .judge-card {
       margin-top: 14px; background: #fafafa; border-radius: 10px;
       padding: 14px; border: 1px solid #f0f0f5;
     }
-    .judge-card h4 {
-      font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
-      color: #86868b; margin-bottom: 6px;
-    }
+    .judge-card h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #86868b; margin-bottom: 6px; }
     .judge-card p { font-size: 12px; line-height: 1.5; }
-
-    /* ── Disclaimer ── */
     .disclaimer {
       margin-top: 16px; padding: 12px 16px; background: #fff8e6;
       border-radius: 8px; border: 1px solid #ffe69c;
       font-size: 11px; color: #856404; line-height: 1.5;
     }
-
-    /* ── Error ── */
-    .error-card {
-      border-left: 4px solid #ff3b30;
-    }
+    .error-card { border-left: 4px solid #ff3b30; }
     .error-card h3 { color: #ff3b30; margin-bottom: 6px; font-size: 15px; }
     .error-card p { font-size: 13px; color: #86868b; }
-
-    /* ── Success ── */
     .success-card { border-left: 4px solid #34c759; }
     .success-card h3 { color: #34c759; margin-bottom: 6px; font-size: 15px; }
-
-    /* ── Browse ── */
-    .browse-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 16px;
-    }
+    .browse-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
     .browse-header h2 { font-size: 16px; font-weight: 700; color: #1E1E3F; }
     .browse-stats { font-size: 12px; color: #86868b; }
     .repo-card {
@@ -190,39 +139,37 @@
       cursor: pointer; transition: box-shadow 0.2s;
     }
     .repo-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .repo-card.expanded { cursor: default; }
-    .repo-title {
-      display: flex; justify-content: space-between; align-items: center;
-    }
+    .repo-title { display: flex; justify-content: space-between; align-items: center; }
     .repo-title h3 { font-size: 15px; font-weight: 600; color: #1E1E3F; }
     .repo-title .counts { font-size: 12px; color: #86868b; }
     .doc-list { margin-top: 12px; border-top: 1px solid #f0f0f5; padding-top: 10px; }
-    .doc-item {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 8px 0; border-bottom: 1px solid #f8f8fa;
-    }
+    .doc-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f8f8fa; }
     .doc-item:last-child { border-bottom: none; }
     .doc-name { font-size: 13px; font-weight: 500; color: #1d1d1f; }
     .doc-meta { font-size: 11px; color: #86868b; display: flex; gap: 8px; align-items: center; }
-    .doc-type-badge {
-      padding: 2px 8px; border-radius: 10px; font-size: 10px;
-      font-weight: 600; text-transform: uppercase; background: #f0f0f5; color: #1E1E3F;
+    .doc-type-badge { padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; text-transform: uppercase; background: #f0f0f5; color: #1E1E3F; }
+    .memory-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+    .memory-stat {
+      background: #fff; border-radius: 10px; padding: 14px 18px; flex: 1; min-width: 90px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06); text-align: center;
     }
-    .share-btn {
-      background: none; border: 1px solid #e5e5ea; padding: 4px 10px;
-      border-radius: 6px; font-size: 11px; color: #1E1E3F; cursor: pointer;
+    .memory-stat .val { font-size: 22px; font-weight: 700; color: #1E1E3F; }
+    .memory-stat .lbl { font-size: 11px; color: #86868b; margin-top: 2px; }
+    .memory-entry {
+      background: #fff; border-radius: 10px; padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06); margin-bottom: 10px;
+      cursor: pointer; transition: box-shadow 0.2s;
     }
-    .share-btn:hover { background: #f0f0f5; }
-
-    /* ── Footer ── */
+    .memory-entry:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .memory-entry.stale { border-left: 4px solid #ff9500; }
+    .memory-question { font-size: 14px; font-weight: 600; color: #1E1E3F; margin-bottom: 6px; }
+    .memory-answer { font-size: 12px; color: #86868b; line-height: 1.5; max-height: 60px; overflow: hidden; transition: max-height 0.3s; }
+    .memory-entry.expanded .memory-answer { max-height: 2000px; color: #1d1d1f; }
+    .memory-meta { display: flex; gap: 8px; align-items: center; margin-top: 8px; flex-wrap: wrap; }
+    .stale-tag { background: #fff3cd; color: #856404; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+    .fresh-tag { background: #d4edda; color: #155724; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+    .time-tag { font-size: 11px; color: #aeaeb2; }
     footer { text-align: center; padding: 16px; font-size: 11px; color: #aeaeb2; }
-
-    /* ── Future features banner ── */
-    .future-banner {
-      background: #f0f0f5; border-radius: 10px; padding: 14px 18px;
-      margin-top: 16px; font-size: 12px; color: #86868b;
-    }
-    .future-banner strong { color: #1E1E3F; }
   </style>
 </head>
 <body>
@@ -231,16 +178,14 @@
     <h1>Legal Compliance QA</h1>
     <span class="tag">Build0023</span>
   </header>
-
   <div class="tabs">
     <div class="tab active" onclick="switchTab('ask')">Ask</div>
     <div class="tab" onclick="switchTab('upload')">Upload</div>
     <div class="tab" onclick="switchTab('browse')">Browse</div>
+    <div class="tab" onclick="switchTab('memory')">Memory</div>
   </div>
-
   <div class="container">
-
-    <!-- ════════════ ASK TAB ════════════ -->
+    <!-- ASK -->
     <div class="page active" id="page-ask">
       <div class="card">
         <label for="question">Ask a compliance question</label>
@@ -252,384 +197,145 @@
           <span class="chip" onclick="fillQ(this)">DBS certificate handling</span>
         </div>
         <div class="btn-row">
-          <span class="hint">AI-generated answers — review before acting</span>
+          <span class="hint">AI-generated &mdash; review before acting</span>
           <button id="ask-btn" onclick="submitQuestion()">Ask</button>
         </div>
       </div>
-
       <div class="card loading" id="ask-loading">
         <div class="spinner"></div>
         <p>Searching knowledge base and generating answer...</p>
         <p class="elapsed" id="ask-elapsed">0s</p>
-        <p class="hint" style="margin-top:8px">This typically takes 60-120 seconds</p>
+        <p class="hint" style="margin-top:8px">Typically takes 15-25 seconds</p>
       </div>
-
       <div class="result" id="ask-result"></div>
     </div>
-
-    <!-- ════════════ UPLOAD TAB ════════════ -->
+    <!-- UPLOAD -->
     <div class="page" id="page-upload">
       <div class="card">
         <div class="form-row">
-          <div class="form-group">
-            <label for="doc-title">Document title</label>
-            <input type="text" id="doc-title" placeholder="e.g. POL-25 Data Sharing Agreement">
-          </div>
-          <div class="form-group" style="max-width:180px">
-            <label for="doc-type">Type</label>
-            <select id="doc-type">
-              <option value="policy">Policy</option>
-              <option value="guidance" selected>Guidance</option>
-              <option value="matrix">Matrix</option>
-              <option value="template">Template</option>
-              <option value="procedure">Procedure</option>
-            </select>
+          <div class="form-group"><label for="doc-title">Document title</label><input type="text" id="doc-title" placeholder="e.g. POL-25 Data Sharing Agreement"></div>
+          <div class="form-group" style="max-width:180px"><label for="doc-type">Type</label>
+            <select id="doc-type"><option value="policy">Policy</option><option value="guidance" selected>Guidance</option><option value="matrix">Matrix</option><option value="template">Template</option><option value="procedure">Procedure</option></select>
           </div>
         </div>
-
-        <div class="form-group" style="margin-bottom:14px">
-          <label for="doc-repo">Repository</label>
-          <input type="text" id="doc-repo" placeholder="e.g. legal-policies, compliance-guides (default: general)" value="general">
-        </div>
-
-        <div class="form-group">
-          <label for="doc-content">Content (paste text or markdown)</label>
-          <textarea id="doc-content" style="min-height:200px" placeholder="Paste the full document content here..."></textarea>
-        </div>
-
-        <div class="btn-row">
-          <span class="hint" id="upload-char-count">0 characters</span>
-          <button id="upload-btn" onclick="submitUpload()">Upload &amp; Ingest</button>
-        </div>
+        <div class="form-group" style="margin-bottom:14px"><label for="doc-repo">Repository</label><input type="text" id="doc-repo" placeholder="e.g. legal-policies" value="general"></div>
+        <div class="form-group"><label for="doc-content">Content (paste text or markdown)</label><textarea id="doc-content" style="min-height:200px" placeholder="Paste the full document content here..."></textarea></div>
+        <div class="btn-row"><span class="hint" id="upload-char-count">0 characters</span><button id="upload-btn" onclick="submitUpload()">Upload &amp; Ingest</button></div>
       </div>
-
-      <div class="card loading" id="upload-loading">
-        <div class="spinner"></div>
-        <p>Analysing, chunking, and embedding document...</p>
-        <p class="elapsed" id="upload-elapsed">0s</p>
-      </div>
-
+      <div class="card loading" id="upload-loading"><div class="spinner"></div><p>Analysing, chunking, and embedding...</p><p class="elapsed" id="upload-elapsed">0s</p></div>
       <div class="result" id="upload-result"></div>
     </div>
-
-    <!-- ════════════ BROWSE TAB ════════════ -->
+    <!-- BROWSE -->
     <div class="page" id="page-browse">
-      <div class="browse-header">
-        <h2>Knowledge Base</h2>
-        <span class="browse-stats" id="browse-stats"></span>
-      </div>
-      <div id="browse-loading" class="card loading" style="display:block">
-        <div class="spinner"></div>
-        <p>Loading documents from Qdrant...</p>
-      </div>
+      <div class="browse-header"><h2>Knowledge Base</h2><span class="browse-stats" id="browse-stats"></span></div>
+      <div id="browse-loading" class="card loading" style="display:block"><div class="spinner"></div><p>Loading documents from Qdrant...</p></div>
       <div id="browse-content"></div>
       <button class="btn-secondary" onclick="loadDocuments()" style="margin-top:12px">Refresh</button>
     </div>
-
+    <!-- MEMORY -->
+    <div class="page" id="page-memory">
+      <div class="browse-header"><h2>Answer Memory</h2><span class="browse-stats" id="memory-header-stats"></span></div>
+      <div id="memory-stats-row" class="memory-stats"></div>
+      <div class="disclaimer" style="margin-bottom:16px;margin-top:0">
+        Answers are cached when asked. When new documents are ingested, existing answers are marked <strong>stale</strong> and should be re-asked. Stale answers should not be shared without re-verification.
+      </div>
+      <div id="memory-loading" class="card loading" style="display:block"><div class="spinner"></div><p>Loading answer memory...</p></div>
+      <div id="memory-content"></div>
+      <button class="btn-secondary" onclick="loadMemory()" style="margin-top:12px">Refresh</button>
+    </div>
   </div>
-
   <footer>Legal Compliance QA &middot; Zinc &middot; Build0023-TRUST_QA</footer>
-
   <script>
-    /* ── Tab switching ── */
     function switchTab(tab) {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.querySelector(`.tab[onclick*="${tab}"]`).classList.add('active');
       document.getElementById(`page-${tab}`).classList.add('active');
-
       if (tab === 'browse') loadDocuments();
+      if (tab === 'memory') loadMemory();
     }
-
-    /* ── Timers ── */
     let askTimer, uploadTimer, askStart, uploadStart;
-    function startTimer(prefix) {
-      const start = Date.now();
-      if (prefix === 'ask') { askStart = start; }
-      else { uploadStart = start; }
-      const ref = prefix;
-      const id = setInterval(() => {
-        const s = Math.floor((Date.now() - (ref === 'ask' ? askStart : uploadStart)) / 1000);
-        const el = document.getElementById(`${ref}-elapsed`);
-        if (el) el.textContent = s + 's';
-      }, 1000);
-      if (prefix === 'ask') askTimer = id; else uploadTimer = id;
-    }
-    function stopTimer(prefix) {
-      clearInterval(prefix === 'ask' ? askTimer : uploadTimer);
-    }
+    function startTimer(p) { const s=Date.now(); if(p==='ask')askStart=s;else uploadStart=s; const id=setInterval(()=>{const e=Math.floor((Date.now()-(p==='ask'?askStart:uploadStart))/1000);const el=document.getElementById(`${p}-elapsed`);if(el)el.textContent=e+'s';},1000); if(p==='ask')askTimer=id;else uploadTimer=id; }
+    function stopTimer(p) { clearInterval(p==='ask'?askTimer:uploadTimer); }
+    function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+    function fillQ(el) { document.getElementById('question').value=el.textContent; }
+    function timeAgo(ds) { const s=Math.floor((Date.now()-new Date(ds).getTime())/1000); if(s<60)return'just now'; if(s<3600)return Math.floor(s/60)+'m ago'; if(s<86400)return Math.floor(s/3600)+'h ago'; return Math.floor(s/86400)+'d ago'; }
+    document.getElementById('doc-content')?.addEventListener('input',function(){document.getElementById('upload-char-count').textContent=this.value.length+' characters';});
+    let lastQuestion='';
 
-    /* ── Helpers ── */
-    function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-    function fillQ(el) { document.getElementById('question').value = el.textContent; }
-
-    // Character counter for upload
-    document.getElementById('doc-content')?.addEventListener('input', function() {
-      document.getElementById('upload-char-count').textContent = this.value.length + ' characters';
-    });
-
-    /* ════════ ASK ════════ */
     async function submitQuestion() {
-      const q = document.getElementById('question').value.trim();
-      if (q.length < 5) return;
-      const btn = document.getElementById('ask-btn');
-      const ta = document.getElementById('question');
-      const loading = document.getElementById('ask-loading');
-      const result = document.getElementById('ask-result');
-
-      btn.disabled = ta.disabled = true;
-      loading.classList.add('active');
-      result.classList.remove('active');
-      startTimer('ask');
-
+      const q=document.getElementById('question').value.trim(); if(q.length<5)return; lastQuestion=q;
+      const btn=document.getElementById('ask-btn'),ta=document.getElementById('question'),loading=document.getElementById('ask-loading'),result=document.getElementById('ask-result');
+      btn.disabled=ta.disabled=true; loading.classList.add('active'); result.classList.remove('active'); startTimer('ask');
       try {
-        const resp = await fetch('/api/ask', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question: q }),
-        });
-        stopTimer('ask');
-        const elapsed = ((Date.now() - askStart) / 1000).toFixed(1);
-
-        if (!resp.ok) {
-          const err = await resp.json().catch(() => ({ error: 'Unknown error' }));
-          showAskError(err.error || 'Pipeline error', elapsed);
-          return;
-        }
-        showAskResult(await resp.json(), elapsed);
-      } catch (err) {
-        stopTimer('ask');
-        showAskError(err.message, ((Date.now() - askStart) / 1000).toFixed(1));
-      } finally {
-        loading.classList.remove('active');
-        btn.disabled = ta.disabled = false;
-      }
+        const resp=await fetch('/api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})});
+        stopTimer('ask'); const elapsed=((Date.now()-askStart)/1000).toFixed(1);
+        if(!resp.ok){const err=await resp.json().catch(()=>({error:'Unknown error'})); showAskError(err.error||'Pipeline error',elapsed); return;}
+        showAskResult(await resp.json(),elapsed);
+      } catch(err){ stopTimer('ask'); showAskError(err.message,((Date.now()-askStart)/1000).toFixed(1)); }
+      finally{ loading.classList.remove('active'); btn.disabled=ta.disabled=false; }
     }
-
-    function showAskResult(d, elapsed) {
-      const conf = (d.confidence || 'MEDIUM').toUpperCase();
-      const verdict = (d.judge_verdict || 'NEEDS_EDIT').toUpperCase();
-      const routing = d.routing || 'human_review';
-
-      document.getElementById('ask-result').innerHTML = `
-        <div class="card">
-          <div class="result-header">
-            <span class="badge ${conf.toLowerCase()}">${conf}</span>
-            <span class="badge ${verdict.toLowerCase().replace(/_/g,'')}">${verdict.replace(/_/g,' ')}</span>
-            <div class="meta">
-              ${d.citation_count||0} citations &middot; ${d.chunks_retrieved||0} chunks<br>
-              ${elapsed}s &middot; ${routing==='auto_deliver'?'Auto-deliver':'Needs review'}
-            </div>
-          </div>
-          <div class="answer-text">${esc(d.answer||'No answer')}</div>
-          ${d.judge_reasoning?`
-            <div class="judge-card">
-              <h4>Quality Review</h4>
-              <p>${esc(d.judge_reasoning)}</p>
-              ${d.judge_quality?`<p style="margin-top:4px;font-size:11px;color:#86868b">Score: ${d.judge_quality}</p>`:''}
-            </div>`:''}
-          <div class="stats">
-            <div class="stat"><strong>${d.category||'-'}</strong>Category</div>
-            <div class="stat"><strong>${d.complexity||'-'}</strong>Complexity</div>
-            <div class="stat"><strong>${d.model_used||'-'}</strong>Model</div>
-            <div class="stat"><strong>${d.retrieval_method||'-'}</strong>Retrieval</div>
-          </div>
-          <div class="feedback-row">
-            <span>Was this helpful?</span>
-            <div class="fb-btn" onclick="feedback(this,'up')">&#128077; <span class="fb-label">Yes</span></div>
-            <div class="fb-btn" onclick="feedback(this,'down')">&#128078; <span class="fb-label">No</span></div>
-          </div>
-          <div class="disclaimer">
-            AI-generated answer from Zinc's compliance knowledge base. Must be reviewed by Legal before use.
-          </div>
-          <div style="margin-top:14px">
-            <button class="btn-secondary" onclick="resetAsk()">Ask another question</button>
-          </div>
-        </div>`;
+    function showAskResult(d,elapsed) {
+      const conf=(d.confidence||'MEDIUM').toUpperCase(),verdict=(d.judge_verdict||'NEEDS_EDIT').toUpperCase(),routing=d.routing||'human_review';
+      document.getElementById('ask-result').innerHTML=`<div class="card">
+        <div class="result-header"><span class="badge ${conf.toLowerCase()}">${conf}</span><span class="badge ${verdict.toLowerCase().replace(/_/g,'')}">${verdict.replace(/_/g,' ')}</span>
+        <div class="meta">${d.citation_count||0} citations &middot; ${d.chunks_retrieved||0} chunks<br>${elapsed}s &middot; ${routing==='auto_deliver'?'Auto-deliver':'Needs review'}</div></div>
+        <div class="answer-text">${esc(d.answer||'No answer')}</div>
+        ${d.judge_reasoning?`<div class="judge-card"><h4>Quality Review</h4><p>${esc(d.judge_reasoning)}</p>${d.judge_quality?`<p style="margin-top:4px;font-size:11px;color:#86868b">Score: ${d.judge_quality}</p>`:''}</div>`:''}
+        <div class="stats"><div class="stat"><strong>${d.category||'-'}</strong>Category</div><div class="stat"><strong>${d.complexity||'-'}</strong>Complexity</div><div class="stat"><strong>${d.model_used||'-'}</strong>Model</div><div class="stat"><strong>${d.retrieval_method||'-'}</strong>Retrieval</div></div>
+        <div class="feedback-row"><span>Was this helpful?</span><div class="fb-btn" onclick="feedback(this,'up')">&#128077; <span class="fb-label">Yes</span></div><div class="fb-btn" onclick="feedback(this,'down')">&#128078; <span class="fb-label">No</span></div></div>
+        <div class="disclaimer">AI-generated answer from Zinc's compliance knowledge base. Must be reviewed by Legal before use.</div>
+        <div style="margin-top:14px"><button class="btn-secondary" onclick="resetAsk()">Ask another question</button></div></div>`;
       document.getElementById('ask-result').classList.add('active');
     }
+    function showAskError(msg,elapsed){document.getElementById('ask-result').innerHTML=`<div class="card error-card"><h3>Something went wrong</h3><p>${esc(msg)}</p><p style="margin-top:6px;font-size:11px">After ${elapsed}s</p><button class="btn-secondary" onclick="resetAsk()" style="margin-top:12px">Try again</button></div>`;document.getElementById('ask-result').classList.add('active');}
+    function resetAsk(){document.getElementById('question').value='';document.getElementById('ask-result').classList.remove('active');}
+    function feedback(el,dir){el.parentElement.querySelectorAll('.fb-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');fetch('/api/feedback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:lastQuestion,feedback:dir})}).catch(()=>{});}
+    document.getElementById('question')?.addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.metaKey||e.ctrlKey))submitQuestion();});
 
-    function showAskError(msg, elapsed) {
-      document.getElementById('ask-result').innerHTML = `
-        <div class="card error-card">
-          <h3>Something went wrong</h3>
-          <p>${esc(msg)}</p>
-          <p style="margin-top:6px;font-size:11px">After ${elapsed}s</p>
-          <button class="btn-secondary" onclick="resetAsk()" style="margin-top:12px">Try again</button>
-        </div>`;
-      document.getElementById('ask-result').classList.add('active');
-    }
-
-    function resetAsk() {
-      document.getElementById('question').value = '';
-      document.getElementById('ask-result').classList.remove('active');
-    }
-
-    function feedback(el, dir) {
-      el.parentElement.querySelectorAll('.fb-btn').forEach(b => b.classList.remove('selected'));
-      el.classList.add('selected');
-      // Future: POST to /api/feedback
-      console.log('Feedback:', dir);
-    }
-
-    document.getElementById('question')?.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) submitQuestion();
-    });
-
-    /* ════════ UPLOAD ════════ */
     async function submitUpload() {
-      const title = document.getElementById('doc-title').value.trim();
-      const content = document.getElementById('doc-content').value.trim();
-      const docType = document.getElementById('doc-type').value;
-      const repo = document.getElementById('doc-repo').value.trim() || 'general';
-
-      if (!title) return alert('Title is required');
-      if (content.length < 50) return alert('Content too short (min 50 chars)');
-
-      const btn = document.getElementById('upload-btn');
-      const loading = document.getElementById('upload-loading');
-      const result = document.getElementById('upload-result');
-
-      btn.disabled = true;
-      loading.classList.add('active');
-      result.classList.remove('active');
-      startTimer('upload');
-
-      try {
-        const resp = await fetch('/api/ingest', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title, content, document_type: docType, repo }),
-        });
-        stopTimer('upload');
-        const elapsed = ((Date.now() - uploadStart) / 1000).toFixed(1);
-
-        const data = await resp.json();
-        if (!resp.ok) {
-          showUploadError(data.error || 'Ingestion failed', elapsed);
-          return;
-        }
-        showUploadResult(data, elapsed);
-      } catch (err) {
-        stopTimer('upload');
-        showUploadError(err.message, ((Date.now() - uploadStart) / 1000).toFixed(1));
-      } finally {
-        loading.classList.remove('active');
-        btn.disabled = false;
-      }
+      const title=document.getElementById('doc-title').value.trim(),content=document.getElementById('doc-content').value.trim(),docType=document.getElementById('doc-type').value,repo=document.getElementById('doc-repo').value.trim()||'general';
+      if(!title)return alert('Title is required'); if(content.length<50)return alert('Content too short');
+      const btn=document.getElementById('upload-btn'),loading=document.getElementById('upload-loading'),result=document.getElementById('upload-result');
+      btn.disabled=true; loading.classList.add('active'); result.classList.remove('active'); startTimer('upload');
+      try{const resp=await fetch('/api/ingest',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title,content,type:docType,repo})});stopTimer('upload');const elapsed=((Date.now()-uploadStart)/1000).toFixed(1);const data=await resp.json();if(!resp.ok){showUploadError(data.error||'Ingestion failed',elapsed);return;}showUploadResult(data,elapsed);}
+      catch(err){stopTimer('upload');showUploadError(err.message,((Date.now()-uploadStart)/1000).toFixed(1));}
+      finally{loading.classList.remove('active');btn.disabled=false;}
     }
-
-    function showUploadResult(d, elapsed) {
-      document.getElementById('upload-result').innerHTML = `
-        <div class="card success-card">
-          <h3>Document Ingested</h3>
-          <p style="margin-top:8px"><strong>${esc(d.title||'Untitled')}</strong></p>
-          <div class="stats" style="border:none;padding-top:12px;margin-top:8px">
-            <div class="stat"><strong>${d.chunks_stored||0}</strong>Chunks</div>
-            <div class="stat"><strong>${d.embedding_tokens||0}</strong>Tokens</div>
-            <div class="stat"><strong>${d.qdrant_status||'-'}</strong>Qdrant</div>
-            <div class="stat"><strong>${elapsed}s</strong>Time</div>
-          </div>
-          ${d.analysis?`<div class="judge-card" style="margin-top:12px">
-            <h4>Analysis</h4>
-            <p>${esc(d.analysis.summary||JSON.stringify(d.analysis))}</p>
-            ${d.analysis.jurisdictions?`<p style="margin-top:4px;font-size:11px;color:#86868b">Jurisdictions: ${d.analysis.jurisdictions.join(', ')}</p>`:''}
-            ${d.analysis.topics?`<p style="font-size:11px;color:#86868b">Topics: ${d.analysis.topics.join(', ')}</p>`:''}
-          </div>`:''}
-          <button class="btn-secondary" onclick="resetUpload()" style="margin-top:14px">Upload another</button>
-        </div>`;
-      document.getElementById('upload-result').classList.add('active');
-    }
-
-    function showUploadError(msg, elapsed) {
-      document.getElementById('upload-result').innerHTML = `
-        <div class="card error-card">
-          <h3>Ingestion Failed</h3>
-          <p>${esc(msg)}</p>
-          <p style="margin-top:6px;font-size:11px">After ${elapsed}s</p>
-          <button class="btn-secondary" onclick="document.getElementById('upload-result').classList.remove('active')" style="margin-top:12px">Try again</button>
-        </div>`;
-      document.getElementById('upload-result').classList.add('active');
-    }
-
-    function resetUpload() {
-      document.getElementById('doc-title').value = '';
-      document.getElementById('doc-content').value = '';
-      document.getElementById('doc-repo').value = 'general';
-      document.getElementById('upload-char-count').textContent = '0 characters';
-      document.getElementById('upload-result').classList.remove('active');
-    }
-
-    /* ════════ BROWSE ════════ */
-    let browseData = null;
+    function showUploadResult(d,elapsed){document.getElementById('upload-result').innerHTML=`<div class="card success-card"><h3>Document Ingested</h3><p style="margin-top:8px"><strong>${esc(d.title||'Untitled')}</strong></p><div class="stats" style="border:none;padding-top:12px;margin-top:8px"><div class="stat"><strong>${d.chunks_stored||0}</strong>Chunks</div><div class="stat"><strong>${elapsed}s</strong>Time</div></div><div class="disclaimer" style="margin-top:12px">Previous cached answers marked stale. Re-ask questions to get updated responses.</div><button class="btn-secondary" onclick="resetUpload()" style="margin-top:14px">Upload another</button></div>`;document.getElementById('upload-result').classList.add('active');}
+    function showUploadError(msg,elapsed){document.getElementById('upload-result').innerHTML=`<div class="card error-card"><h3>Ingestion Failed</h3><p>${esc(msg)}</p><p style="margin-top:6px;font-size:11px">After ${elapsed}s</p><button class="btn-secondary" onclick="document.getElementById('upload-result').classList.remove('active')" style="margin-top:12px">Try again</button></div>`;document.getElementById('upload-result').classList.add('active');}
+    function resetUpload(){document.getElementById('doc-title').value='';document.getElementById('doc-content').value='';document.getElementById('doc-repo').value='general';document.getElementById('upload-char-count').textContent='0 characters';document.getElementById('upload-result').classList.remove('active');}
 
     async function loadDocuments() {
-      const loading = document.getElementById('browse-loading');
-      const content = document.getElementById('browse-content');
-      loading.style.display = 'block';
-      content.innerHTML = '';
-
-      try {
-        const resp = await fetch('/api/documents');
-        const data = await resp.json();
-        browseData = data;
-
-        if (data.error) {
-          content.innerHTML = `<div class="card error-card"><h3>Could not load</h3><p>${esc(data.error)}</p>
-            <p class="hint" style="margin-top:8px">Qdrant may be sleeping. Try again in 30 seconds.</p></div>`;
-          loading.style.display = 'none';
-          return;
-        }
-
-        document.getElementById('browse-stats').textContent =
-          `${data.total_documents} documents \u00b7 ${data.total_chunks} chunks \u00b7 ${data.repos.length} repos`;
-
-        let html = '';
-        for (const repo of data.repos) {
-          const repoDocs = data.documents.filter(d => d.repo === repo.name);
-          html += `
-            <div class="repo-card" id="repo-${repo.name}" onclick="toggleRepo('${repo.name}')">
-              <div class="repo-title">
-                <h3>${esc(repo.name)}</h3>
-                <span class="counts">${repo.doc_count} docs &middot; ${repo.total_chunks} chunks</span>
-              </div>
-              <div class="doc-list" id="docs-${repo.name}" style="display:none">
-                ${repoDocs.map(d => `
-                  <div class="doc-item">
-                    <div>
-                      <div class="doc-name">${esc(d.title)}</div>
-                      <div class="doc-meta" style="margin-top:3px">
-                        ${d.jurisdictions.length ? d.jurisdictions.join(', ') : ''}
-                        ${d.topics.length ? ' &middot; ' + d.topics.slice(0,3).join(', ') : ''}
-                      </div>
-                    </div>
-                    <div class="doc-meta">
-                      <span class="doc-type-badge">${d.document_type}</span>
-                      <span>${d.chunks} chunks</span>
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            </div>`;
-        }
-
-        content.innerHTML = html;
-
-        // Auto-expand if only 1-2 repos
-        if (data.repos.length <= 2) {
-          data.repos.forEach(r => toggleRepo(r.name));
-        }
-
-      } catch (err) {
-        content.innerHTML = `<div class="card error-card"><h3>Error</h3><p>${esc(err.message)}</p></div>`;
-      } finally {
-        loading.style.display = 'none';
-      }
+      const loading=document.getElementById('browse-loading'),content=document.getElementById('browse-content');
+      loading.style.display='block'; content.innerHTML='';
+      try{const resp=await fetch('/api/documents');const data=await resp.json();
+        if(data.error){content.innerHTML=`<div class="card error-card"><h3>Could not load</h3><p>${esc(data.error)}</p><p class="hint" style="margin-top:8px">Qdrant may be waking up. Try again in 30s.</p></div>`;loading.style.display='none';return;}
+        document.getElementById('browse-stats').textContent=`${data.total_documents||0} documents \u00b7 ${data.total_chunks||0} chunks \u00b7 ${(data.repos||[]).length} repos`;
+        let html='';
+        for(const repo of (data.repos||[])){const repoDocs=(data.documents||[]).filter(d=>d.repo===repo.name);
+          html+=`<div class="repo-card" onclick="toggleRepo('${esc(repo.name)}')"><div class="repo-title"><h3>${esc(repo.name)}</h3><span class="counts">${repo.doc_count} docs &middot; ${repo.total_chunks} chunks</span></div><div class="doc-list" id="docs-${esc(repo.name)}" style="display:none">${repoDocs.map(d=>`<div class="doc-item"><div><div class="doc-name">${esc(d.title)}</div><div class="doc-meta" style="margin-top:3px">${(d.jurisdictions||[]).join(', ')}${(d.topics||[]).length?' &middot; '+d.topics.slice(0,3).join(', '):''}</div></div><div class="doc-meta"><span class="doc-type-badge">${esc(d.document_type||'unknown')}</span><span>${d.chunks} chunks</span></div></div>`).join('')}</div></div>`;}
+        content.innerHTML=html||'<div class="card"><p class="hint">No documents found.</p></div>';
+        if((data.repos||[]).length<=3)(data.repos||[]).forEach(r=>toggleRepo(r.name));
+      }catch(err){content.innerHTML=`<div class="card error-card"><h3>Error</h3><p>${esc(err.message)}</p></div>`;}
+      finally{loading.style.display='none';}
     }
+    function toggleRepo(name){const el=document.getElementById(`docs-${name}`);if(el)el.style.display=el.style.display==='none'?'block':'none';}
 
-    function toggleRepo(name) {
-      const el = document.getElementById(`docs-${name}`);
-      if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    async function loadMemory() {
+      const loading=document.getElementById('memory-loading'),content=document.getElementById('memory-content');
+      loading.style.display='block'; content.innerHTML='';
+      try{const resp=await fetch('/api/memory');const data=await resp.json();
+        if(data.message){content.innerHTML=`<div class="card"><p class="hint">${esc(data.message)}</p></div>`;loading.style.display='none';return;}
+        const s=data.stats||{};
+        document.getElementById('memory-header-stats').textContent=`${data.total||0} answers stored`;
+        document.getElementById('memory-stats-row').innerHTML=`<div class="memory-stat"><div class="val">${data.total||0}</div><div class="lbl">Total</div></div><div class="memory-stat"><div class="val">${s.stale_count||0}</div><div class="lbl">Stale</div></div><div class="memory-stat"><div class="val">${s.thumbs_up||0}</div><div class="lbl">Thumbs Up</div></div><div class="memory-stat"><div class="val">${s.thumbs_down||0}</div><div class="lbl">Thumbs Down</div></div><div class="memory-stat"><div class="val">${s.avg_quality?parseFloat(s.avg_quality).toFixed(2):'-'}</div><div class="lbl">Avg Quality</div></div><div class="memory-stat"><div class="val">${s.avg_time?parseFloat(s.avg_time).toFixed(1)+'s':'-'}</div><div class="lbl">Avg Time</div></div>`;
+        let html='';
+        for(const e of (data.entries||[])){const conf=(e.confidence||'MEDIUM').toLowerCase(),verdict=(e.verdict||'').toLowerCase().replace(/_/g,'');
+          html+=`<div class="memory-entry ${e.stale?'stale':''}" onclick="this.classList.toggle('expanded')"><div class="memory-question">${esc(e.question)}</div><div class="memory-answer">${esc(e.answer||'No answer')}</div><div class="memory-meta"><span class="badge ${conf}" style="font-size:10px">${(e.confidence||'').toUpperCase()}</span><span class="badge ${verdict}" style="font-size:10px">${(e.verdict||'').replace(/_/g,' ').toUpperCase()}</span>${e.stale?'<span class="stale-tag">STALE</span>':'<span class="fresh-tag">FRESH</span>'}${e.feedback?`<span class="badge" style="font-size:10px;background:#f0f0f5">${e.feedback==='up'?'&#128077;':'&#128078;'}</span>`:''}<span class="time-tag">${timeAgo(e.created_at)} &middot; ${(e.processing_time_s||0).toFixed(1)}s &middot; ${e.citation_count||0} citations</span></div>${e.stale&&e.stale_reason?`<div style="margin-top:6px;font-size:11px;color:#856404">${esc(e.stale_reason)}</div>`:''}</div>`;}
+        content.innerHTML=html||'<div class="card"><p class="hint">No answers stored yet. Ask a question to start building memory.</p></div>';
+      }catch(err){content.innerHTML=`<div class="card error-card"><h3>Error</h3><p>${esc(err.message)}</p></div>`;}
+      finally{loading.style.display='none';}
     }
   </script>
 </body>
