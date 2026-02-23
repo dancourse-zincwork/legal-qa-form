@@ -189,6 +189,46 @@
     .fresh-tag { background: #d4edda; color: #155724; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; }
     .time-tag { font-size: 11px; color: #aeaeb2; }
     footer { text-align: center; padding: 16px; font-size: 11px; color: #aeaeb2; }
+
+    /* ── Upload mode toggle ── */
+    .upload-mode-toggle {
+      display: flex; gap: 0; margin-bottom: 16px; background: #f0f0f5;
+      border-radius: 10px; padding: 3px; overflow: hidden;
+    }
+    .upload-mode-btn {
+      flex: 1; padding: 10px 16px; border: none; background: transparent;
+      font-size: 13px; font-weight: 600; color: #86868b; cursor: pointer;
+      border-radius: 8px; transition: all 0.2s;
+    }
+    .upload-mode-btn.active { background: #fff; color: #1E1E3F; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+    /* ── Folder upload ── */
+    .folder-drop {
+      border: 2px dashed #d1d1d6; border-radius: 12px; padding: 32px;
+      text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 14px;
+    }
+    .folder-drop:hover, .folder-drop.dragover { border-color: #1E1E3F; background: #f8f8fc; }
+    .folder-drop h3 { font-size: 15px; color: #1E1E3F; margin-bottom: 6px; }
+    .folder-drop p { font-size: 12px; color: #86868b; }
+    .folder-drop input { display: none; }
+
+    .file-list { max-height: 300px; overflow-y: auto; margin-bottom: 14px; }
+    .file-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 12px; background: #fff; border: 1px solid #f0f0f5;
+      border-radius: 8px; margin-bottom: 4px; font-size: 13px;
+    }
+    .file-item .file-name { font-weight: 500; color: #1d1d1f; flex: 1; }
+    .file-item .file-size { color: #86868b; font-size: 11px; margin-left: 12px; }
+    .file-item .file-remove {
+      margin-left: 8px; color: #ff3b30; cursor: pointer; font-size: 16px;
+      background: none; border: none; padding: 2px 6px;
+    }
+
+    .batch-progress { margin-bottom: 14px; }
+    .progress-bar { height: 6px; background: #e5e5ea; border-radius: 3px; overflow: hidden; }
+    .progress-fill { height: 100%; background: #1E1E3F; border-radius: 3px; transition: width 0.3s; }
+    .progress-text { display: flex; justify-content: space-between; font-size: 12px; color: #86868b; margin-top: 6px; }
   </style>
 </head>
 <body>
@@ -230,17 +270,45 @@
     </div>
     <!-- UPLOAD -->
     <div class="page" id="page-upload">
-      <div class="card">
+      <div class="upload-mode-toggle">
+        <button class="upload-mode-btn active" onclick="setUploadMode('paste')">Paste Text</button>
+        <button class="upload-mode-btn" onclick="setUploadMode('folder')">Upload Folder</button>
+      </div>
+
+      <!-- Paste mode -->
+      <div id="upload-paste" class="card">
         <div class="form-row">
           <div class="form-group"><label for="doc-title">Document title</label><input type="text" id="doc-title" placeholder="e.g. POL-25 Data Sharing Agreement"></div>
           <div class="form-group" style="max-width:180px"><label for="doc-type">Type</label>
-            <select id="doc-type"><option value="policy">Policy</option><option value="guidance" selected>Guidance</option><option value="matrix">Matrix</option><option value="template">Template</option><option value="procedure">Procedure</option></select>
+            <select id="doc-type"><option value="policy">Policy</option><option value="guidance" selected>Guidance</option><option value="matrix">Matrix</option><option value="template">Template</option><option value="procedure">Procedure</option><option value="faq">FAQ</option><option value="ddq">DDQ</option></select>
           </div>
         </div>
         <div class="form-group repo-predict" style="margin-bottom:14px"><label for="doc-repo">Repository</label><input type="text" id="doc-repo" placeholder="e.g. legal-policies" value="general" autocomplete="off" onfocus="showRepoSuggestions()" oninput="filterRepoSuggestions()"><div class="repo-suggestions" id="repo-suggestions"></div></div>
         <div class="form-group"><label for="doc-content">Content (paste text or markdown)</label><textarea id="doc-content" style="min-height:200px" placeholder="Paste the full document content here..."></textarea></div>
         <div class="btn-row"><span class="hint" id="upload-char-count">0 characters</span><button id="upload-btn" onclick="submitUpload()">Upload &amp; Ingest</button></div>
       </div>
+
+      <!-- Folder mode -->
+      <div id="upload-folder" class="card" style="display:none">
+        <div class="folder-drop" id="folder-drop" onclick="document.getElementById('folder-input').click()">
+          <h3>Drop a folder here or click to browse</h3>
+          <p>Supports .md, .txt, .json files. Subfolders included.</p>
+          <input type="file" id="folder-input" webkitdirectory multiple>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="max-width:180px"><label for="folder-doc-type">Type</label>
+            <select id="folder-doc-type"><option value="policy">Policy</option><option value="guidance" selected>Guidance</option><option value="matrix">Matrix</option><option value="template">Template</option><option value="procedure">Procedure</option><option value="faq">FAQ</option><option value="ddq">DDQ</option></select>
+          </div>
+          <div class="form-group"><label for="folder-repo">Repository</label><input type="text" id="folder-repo" placeholder="e.g. ddq-responses" value="general"></div>
+        </div>
+        <div id="folder-file-list" class="file-list" style="display:none"></div>
+        <div id="folder-batch-progress" class="batch-progress" style="display:none">
+          <div class="progress-bar"><div class="progress-fill" id="batch-fill" style="width:0%"></div></div>
+          <div class="progress-text"><span id="batch-status">Processing...</span><span id="batch-count">0 / 0</span></div>
+        </div>
+        <div class="btn-row"><span class="hint" id="folder-file-count">No files selected</span><button id="folder-upload-btn" onclick="submitFolderUpload()" disabled>Upload All</button></div>
+      </div>
+
       <div class="card loading" id="upload-loading"><div class="spinner"></div><p>Analysing, chunking, and embedding...</p><p class="elapsed" id="upload-elapsed">0s</p></div>
       <div class="result" id="upload-result"></div>
     </div>
@@ -310,7 +378,18 @@
       return `<p>${text}</p>`;
     }
     function extractSources(d) {
-      // Build a map of Source N -> document title from context
+      // Prefer structured sources from pipeline (sources/all_sources arrays)
+      const pipelineSources = d.sources || [];
+      const allPipelineSources = d.all_sources || [];
+      if (pipelineSources.length > 0) {
+        return pipelineSources.map(s => ({ num: String(s.index), title: s.title || 'Unknown', relevance: s.relevance ? String(s.relevance) : '' }));
+      }
+      if (allPipelineSources.length > 0) {
+        const referenced = allPipelineSources.filter(s => s.referenced);
+        const display = referenced.length > 0 ? referenced : allPipelineSources.slice(0, 3);
+        return display.map(s => ({ num: String(s.index), title: s.title || 'Unknown', relevance: s.relevance ? String(s.relevance) : '' }));
+      }
+      // Fallback: parse from context_text
       const sources = [];
       const ctx = d.context_text || '';
       const matches = ctx.matchAll(/\[Source (\d+):\s*([^\]]+?)(?:\s*\(relevance:\s*([\d.]+)\))?\]/g);
@@ -392,6 +471,165 @@
       }catch(err){content.innerHTML=`<div class="card error-card"><h3>Error</h3><p>${esc(err.message)}</p></div>`;}
       finally{loading.style.display='none';}
     }
+    /* ════════ UPLOAD MODE TOGGLE ════════ */
+    function setUploadMode(mode) {
+      document.querySelectorAll('.upload-mode-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.upload-mode-btn[onclick*="${mode}"]`).classList.add('active');
+      document.getElementById('upload-paste').style.display = mode === 'paste' ? 'block' : 'none';
+      document.getElementById('upload-folder').style.display = mode === 'folder' ? 'block' : 'none';
+    }
+
+    /* ════════ FOLDER UPLOAD ════════ */
+    let selectedFiles = [];
+
+    document.getElementById('folder-input').addEventListener('change', function(e) {
+      handleFiles(Array.from(e.target.files));
+    });
+
+    const dropZone = document.getElementById('folder-drop');
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault(); dropZone.classList.remove('dragover');
+      const items = e.dataTransfer.items;
+      if (items) {
+        const entries = [];
+        for (let i = 0; i < items.length; i++) { const entry = items[i].webkitGetAsEntry(); if (entry) entries.push(entry); }
+        readEntries(entries).then(handleFiles);
+      }
+    });
+
+    async function readEntries(entries) {
+      const files = [];
+      for (const entry of entries) {
+        if (entry.isFile) { files.push(await new Promise(r => entry.file(r))); }
+        else if (entry.isDirectory) {
+          const reader = entry.createReader();
+          const subEntries = await new Promise(r => reader.readEntries(r));
+          files.push(...await readEntries(subEntries));
+        }
+      }
+      return files;
+    }
+
+    function handleFiles(files) {
+      const supported = ['.md', '.txt', '.json', '.csv'];
+      selectedFiles = files.filter(f => { const ext = '.' + f.name.split('.').pop().toLowerCase(); return supported.includes(ext) && f.size > 0; });
+      renderFileList();
+    }
+
+    function renderFileList() {
+      const list = document.getElementById('folder-file-list');
+      const countEl = document.getElementById('folder-file-count');
+      const btn = document.getElementById('folder-upload-btn');
+      if (selectedFiles.length === 0) { list.style.display = 'none'; countEl.textContent = 'No files selected'; btn.disabled = true; return; }
+      list.style.display = 'block';
+      countEl.textContent = selectedFiles.length + ' files (' + formatSize(selectedFiles.reduce((a,f) => a+f.size, 0)) + ')';
+      btn.disabled = false;
+      list.textContent = '';
+      selectedFiles.forEach((f, i) => {
+        const item = document.createElement('div'); item.className = 'file-item';
+        const name = document.createElement('span'); name.className = 'file-name'; name.textContent = f.webkitRelativePath || f.name;
+        const size = document.createElement('span'); size.className = 'file-size'; size.textContent = formatSize(f.size);
+        const remove = document.createElement('button'); remove.className = 'file-remove'; remove.textContent = '\u00d7';
+        remove.addEventListener('click', () => { selectedFiles.splice(i, 1); renderFileList(); });
+        item.append(name, size, remove); list.appendChild(item);
+      });
+    }
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
+      return (bytes/1048576).toFixed(1) + ' MB';
+    }
+
+    async function submitFolderUpload() {
+      if (selectedFiles.length === 0) return;
+      const docType = document.getElementById('folder-doc-type').value;
+      const repo = document.getElementById('folder-repo').value.trim() || 'general';
+      const btn = document.getElementById('folder-upload-btn');
+      const progress = document.getElementById('folder-batch-progress');
+      const result = document.getElementById('upload-result');
+      btn.disabled = true; progress.style.display = 'block'; result.classList.remove('active');
+
+      const documents = [];
+      for (const file of selectedFiles) {
+        const text = await file.text();
+        if (text.trim().length < 50) continue;
+        const name = file.webkitRelativePath || file.name;
+        const title = name.replace(/\.[^.]+$/, '').replace(/[_-]/g, ' ').replace(/\//g, ' > ');
+        documents.push({ title, content: text.trim(), document_type: docType, repo });
+      }
+
+      if (documents.length === 0) {
+        showUploadError('No files with enough content (min 50 chars)', '0');
+        progress.style.display = 'none'; btn.disabled = false; return;
+      }
+
+      const batchSize = 5;
+      let ingested = 0, errors = 0;
+      const allResults = [], allErrors = [];
+
+      for (let i = 0; i < documents.length; i += batchSize) {
+        const batch = documents.slice(i, i + batchSize);
+        const pct = Math.round((i / documents.length) * 100);
+        document.getElementById('batch-fill').style.width = pct + '%';
+        document.getElementById('batch-status').textContent = 'Embedding batch ' + (Math.floor(i/batchSize)+1) + '...';
+        document.getElementById('batch-count').textContent = i + ' / ' + documents.length;
+
+        try {
+          const resp = await fetch('/api/ingest-batch', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ documents: batch }) });
+          const data = await resp.json();
+          if (data.results) allResults.push(...data.results);
+          if (data.error_details) allErrors.push(...data.error_details);
+          ingested += data.ingested || 0;
+          errors += data.errors || 0;
+        } catch (err) {
+          allErrors.push({ title: 'Batch ' + (Math.floor(i/batchSize)+1), error: err.message });
+          errors += batch.length;
+        }
+      }
+
+      document.getElementById('batch-fill').style.width = '100%';
+      document.getElementById('batch-status').textContent = 'Complete';
+      document.getElementById('batch-count').textContent = documents.length + ' / ' + documents.length;
+
+      const totalChunks = allResults.reduce((a,r) => a + (r.chunks_stored||0), 0);
+      const resultContainer = document.getElementById('upload-result');
+      resultContainer.textContent = '';
+      const card = document.createElement('div');
+      card.className = errors === 0 ? 'card success-card' : 'card';
+      if (errors > 0) card.style.borderLeft = '4px solid #ff9500';
+      const h3 = document.createElement('h3');
+      h3.style.color = errors === 0 ? '#34c759' : '#ff9500';
+      h3.textContent = errors === 0 ? 'All Documents Ingested' : 'Ingested with ' + errors + ' error(s)';
+      card.appendChild(h3);
+      const statsDiv = document.createElement('div');
+      statsDiv.className = 'stats'; statsDiv.style.cssText = 'border:none;padding-top:12px;margin-top:8px';
+      [[ingested,'Ingested'],[totalChunks,'Chunks'],[errors,'Errors']].forEach(([val,label]) => {
+        const s = document.createElement('div'); s.className = 'stat';
+        const strong = document.createElement('strong'); strong.textContent = val;
+        s.appendChild(strong); s.append(label); statsDiv.appendChild(s);
+      });
+      card.appendChild(statsDiv);
+      if (allErrors.length > 0) {
+        const errDiv = document.createElement('div'); errDiv.className = 'judge-card'; errDiv.style.marginTop = '12px';
+        const errH = document.createElement('h4'); errH.textContent = 'Errors'; errDiv.appendChild(errH);
+        allErrors.forEach(e => { const p = document.createElement('p'); p.textContent = e.title + ': ' + e.error; errDiv.appendChild(p); });
+        card.appendChild(errDiv);
+      }
+      const disc = document.createElement('div'); disc.className = 'disclaimer'; disc.style.marginTop = '12px';
+      disc.textContent = 'Previous cached answers marked stale. Re-ask questions to get updated responses.';
+      card.appendChild(disc);
+      const resetBtn = document.createElement('button'); resetBtn.className = 'btn-secondary'; resetBtn.style.marginTop = '14px';
+      resetBtn.textContent = 'Upload more';
+      resetBtn.addEventListener('click', () => { selectedFiles = []; renderFileList(); progress.style.display = 'none'; resultContainer.classList.remove('active'); });
+      card.appendChild(resetBtn);
+      resultContainer.appendChild(card);
+      resultContainer.classList.add('active');
+      btn.disabled = false;
+    }
+
     // Repo auto-predict
     let knownRepos = [];
     async function fetchRepos() {
